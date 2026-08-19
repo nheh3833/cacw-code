@@ -18,9 +18,36 @@ Shakespeare next-character-prediction dataset.
 
 ## Setup
 
+### 1. Create a virtual environment (recommended)
+
 ```bash
+python -m venv .venv
+.venv\Scripts\activate  # On Windows
+# source .venv/bin/activate  # On Linux/Mac
+```
+
+### 2. Install dependencies
+
+**For CPU (default):**
+```bash
+pip install --upgrade pip
 pip install -r requirements.txt
 ```
+
+**For NVIDIA GPU (CUDA 11.8):**
+```bash
+pip install --upgrade pip
+pip install torch==2.1.2 torchvision==0.16.2 --index-url https://download.pytorch.org/whl/cu118
+pip install numpy scikit-learn matplotlib
+```
+
+Replace `cu118` with your CUDA version if different (e.g., `cu121` for CUDA 12.1).
+
+### Troubleshooting
+
+- **PyTorch won't install**: Ensure your Python is 3.8+. Check available PyTorch wheels for your Python version at https://pytorch.org/get-started/locally/
+- **Torchvision version mismatch**: Must match your PyTorch version. If `torch==2.1.2` fails, update torchvision to `0.16.2`.
+- **CUDA/GPU issues**: If you have an NVIDIA GPU, follow the GPU installation step above; CPU-only is fine for development.
 
 ## Running
 

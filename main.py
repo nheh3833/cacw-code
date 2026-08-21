@@ -37,10 +37,9 @@ def main():
     else:
         print("run remote")
         experiment_cifar100_label_switch(0, 0.1, 1e-4)
-        experiment_leaf_shakespeare(15, 7, 0.1, 1e-4)
+        experiment_leaf_shakespeare(200, 5, 0.1, 1e-4)
         experiment_cifar100(0.01, 0.1, 1e-4)
-        experiment_leaf_shakespeare(30, 3, 0.1, 1e-4)
-        experiment_cifar100(10, 0.1, 1e-4)
+
 
 
 if __name__ == "__main__":

@@ -22,3 +22,6 @@ data/
 # OS
 .DS_Store
 Thumbs.db
+
+# Contains hardcoded SSH credentials - never commit
+run_remoute.py

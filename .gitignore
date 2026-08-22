@@ -25,3 +25,6 @@ Thumbs.db
 
 # Contains hardcoded SSH credentials - never commit
 run_remoute.py
+
+# Contains hardcoded SSH credentials - never commit
+view_exp.py

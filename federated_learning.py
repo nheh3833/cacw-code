@@ -4262,7 +4262,7 @@ def experiment_cifar100(sigma, lr1, decay_val):
     global decay
     global max_norm
     max_norm=5
-    itr_num = 6
+    itr_num = 101
     print()
     print()
     print()
@@ -4358,33 +4358,33 @@ def experiment_cifar100(sigma, lr1, decay_val):
             set_seed(seed)
             arr02.append(our_approach(clients_data, testloader, batch, model, lr, do_print="no",do_pca="yes"))
             set_seed(seed)
-            arr9.append(fedrep_train(clients_data, testloader, batch, model, lr))
+            #arr9.append(fedrep_train(clients_data, testloader, batch, model, lr))
             set_seed(seed)
             #arr92.append(fedrep_train(clients_data, testloader, batch, model, lr,participation_rate=p))
             set_seed(seed)
             #arr10.append(our_approach_partial_participation(clients_data,testloader, batch,model,lr,do_print="no",do_reg="yes",p=p ))
             set_seed(seed)
-            arr7.append(ditto_train(clients_data,testloader,batch,model,lr,lam=0.05))
+            #arr7.append(ditto_train(clients_data,testloader,batch,model,lr,lam=0.05))
 
             set_seed(seed)
-            arr2.append(feddisco_gradient_approach(clients_data,testloader,batch,model,lr))
+            #arr2.append(feddisco_gradient_approach(clients_data,testloader,batch,model,lr))
             # 1. Our Approach (No cluster)
             set_seed(seed)
-            arr0.append(our_approach(clients_data, testloader, batch, model, lr, do_print="no"))
+            #arr0.append(our_approach(clients_data, testloader, batch, model, lr, do_print="no"))
             # print(f"arr01: {arr01}") # Added this in case you want to print it too
             # 2. Our Approach pca no reg
             # 2. Our Approach reg no pca
             set_seed(seed)
             start = time.time()
-            arr03.append(our_approach(clients_data, testloader, batch, model, lr, do_print="no",do_reg="yes"))
+            #arr03.append(our_approach(clients_data, testloader, batch, model, lr, do_print="no",do_reg="yes"))
             time03.append(time.time() - start)
             start = time.time()
-            arr3.append(only_my_data_approach(clients_data, testloader, batch, model, lr))
+            #arr3.append(only_my_data_approach(clients_data, testloader, batch, model, lr))
             #time3.append(time.time() - start)
             # 4. Oracle Approach
             set_seed(seed)
             start = time.time()
-            arr4.append(oracle_approach(clients_data, testloader, clusters, batch, model, lr))
+            #arr4.append(oracle_approach(clients_data, testloader, clusters, batch, model, lr))
             time4.append(time.time() - start)
 
 
@@ -4394,14 +4394,14 @@ def experiment_cifar100(sigma, lr1, decay_val):
             # 5. Fed Cluster Algo
             set_seed(seed)
             start = time.time()
-            arr5.append(fed_cluster_algo(clients_data, testloader, batch, "cifar", lr, clusters))
+            #arr5.append(fed_cluster_algo(clients_data, testloader, batch, "cifar", lr, clusters))
             time5.append(time.time() - start)
 
 
             # 6. FedAmp Train
             set_seed(seed)
             start = time.time()
-            arr6.append(fedamp_train(clients_data, testloader, batch, "cifar", lr))
+            #arr6.append(fedamp_train(clients_data, testloader, batch, "cifar", lr))
             time6.append(time.time() - start)
 
         # Calculate and print the average times at the end
@@ -4433,7 +4433,7 @@ def experiment_cifar100_label_switch(sigma, lr1, decay_val):
     global decay
     global max_norm
     max_norm = 5
-    itr_num = 6
+    itr_num = 101
 
     print("\n\n\n")
     print("start experiment cifar100 with STRICT DISJOINT LABEL SWITCHING (FIRST 10 CLASSES)")
@@ -4688,7 +4688,7 @@ def experiment_leaf_shakespeare(num_clients,users,lr1=0.1, decay_val=1e-4):
     print()
     print()
     print()
-    itr_num = 6 # LSTMs might need more rounds, feel free to increase to 200
+    itr_num = 100 # LSTMs might need more rounds, feel free to increase to 200
     batch = 32
     jump = 1
     momentum = 0.9
@@ -4732,29 +4732,29 @@ def experiment_leaf_shakespeare(num_clients,users,lr1=0.1, decay_val=1e-4):
     time0, time01,time02,time03,time04,time2, time3, time4, time5, time6 = [], [], [], [], [], [],[],[],[],[]
     for seed in seeds:
         set_seed(seed)
-        arr9.append(fedrep_train(clients_data, testloader, batch, model, lr))
+        #arr9.append(fedrep_train(clients_data, testloader, batch, model, lr))
         set_seed(seed)
-        arr92.append(fedrep_train(clients_data, testloader, batch, model, lr,participation_rate=p))
+        #arr92.append(fedrep_train(clients_data, testloader, batch, model, lr,participation_rate=p))
         set_seed()
-        arr10.append(our_approach_partial_participation(clients_data,testloader,batch,model,lr,do_print="no",do_reg="yes",p=p))
+        #arr10.append(our_approach_partial_participation(clients_data,testloader,batch,model,lr,do_print="no",do_reg="yes",p=p))
         set_seed(seed)
         arr02.append(our_approach(clients_data, testloader, batch, model, lr, do_print="no",do_pca="yes"))
         set_seed(seed)
-        arr7.append(ditto_train(clients_data,testloader,batch,model,lr,lam=0.05))
+        #arr7.append(ditto_train(clients_data,testloader,batch,model,lr,lam=0.05))
         set_seed(seed)
-        arr2.append(feddisco_gradient_approach(clients_data,testloader,batch,model,lr))
+        #arr2.append(feddisco_gradient_approach(clients_data,testloader,batch,model,lr))
         # 1. Our Approach (No cluster)
         set_seed(seed)
-        arr0.append(our_approach(clients_data, testloader, batch, model, lr, do_print="no"))
+        #arr0.append(our_approach(clients_data, testloader, batch, model, lr, do_print="no"))
         # print(f"arr01: {arr01}") # Added this in case you want to print it too
         # 2. Our Approach pca no reg
         # 2. Our Approach reg no pca
         set_seed(seed)
         start = time.time()
-        arr03.append(our_approach(clients_data, testloader, batch, model, lr, do_print="no",do_reg="yes"))
+        #arr03.append(our_approach(clients_data, testloader, batch, model, lr, do_print="no",do_reg="yes"))
         time03.append(time.time() - start)
         start = time.time()
-        arr3.append(only_my_data_approach(clients_data, testloader, batch, model, lr))
+        #arr3.append(only_my_data_approach(clients_data, testloader, batch, model, lr))
         time3.append(time.time() - start)
         # 4. Oracle Approach
         set_seed(seed)
@@ -4763,14 +4763,14 @@ def experiment_leaf_shakespeare(num_clients,users,lr1=0.1, decay_val=1e-4):
         # 5. Fed Cluster Algo
         set_seed(seed)
         start = time.time()
-        arr5.append(fed_cluster_algo(clients_data, testloader, batch, "lstm", lr, 1))
+        #arr5.append(fed_cluster_algo(clients_data, testloader, batch, "lstm", lr, 1))
         time5.append(time.time() - start)
 
 
         # 6. FedAmp Train
         set_seed(seed)
         start = time.time()
-        arr6.append(fedamp_train(clients_data, testloader, batch, "lstm", lr))
+        #arr6.append(fedamp_train(clients_data, testloader, batch, "lstm", lr))
         time6.append(time.time() - start)
 
         num_seeds = len(seeds)
@@ -4861,7 +4861,7 @@ def verify_test_set(testloader, num_seqs_to_show=5):
 
     print("\n" + "="*60 + "\n")
 max_norm=1
-itr_num = 6
+itr_num = 100
 jump = 1
 momentum = 0.9
 decay = 5e-4

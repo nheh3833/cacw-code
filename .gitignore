@@ -9,9 +9,10 @@ __pycache__/
 venv/
 env/
 
-# IDE
+# IDE / tooling
 .idea/
 .vscode/
+.claude/
 
 # Downloaded datasets / experiment outputs
 data/
@@ -23,8 +24,6 @@ data/
 .DS_Store
 Thumbs.db
 
-# Contains hardcoded SSH credentials - never commit
-run_remoute.py
-
-# Contains hardcoded SSH credentials - never commit
-view_exp.py
+# NOTE: run_remoute.py and view_exp.py are tracked, but their HOST / USER /
+# PASSWORD fields are intentionally left blank. Fill them in locally and do not
+# commit real credentials.

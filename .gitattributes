@@ -1,0 +1,22 @@
+# Normalise line endings: store LF in the repository, check out native on
+# Windows. Without this, core.autocrlf=true makes git warn on every add and can
+# produce whole-file diffs between Windows and Linux collaborators.
+* text=auto eol=lf
+
+# Explicit rules for the file types in this project.
+*.py    text eol=lf
+*.md    text eol=lf
+*.txt   text eol=lf
+*.toml  text eol=lf
+*.json  text eol=lf
+
+# Never touch binary formats.
+*.png   binary
+*.jpg   binary
+*.jpeg  binary
+*.gz    binary
+*.pt    binary
+*.pth   binary
+*.ckpt  binary
+*.npy   binary
+*.npz   binary

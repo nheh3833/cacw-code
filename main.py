@@ -28,19 +28,16 @@ def main():
     # This will give you "exp_teza"
     print(Path(__file__).stem)
 
-    if "YaronAsus" == socket.gethostname():
-        print("run local")
 
-        experiment_rel_mnist(0)
-        experiment_rot_mnist(0)
-
-    else:
-        print("run remote")
-        experiment_cifar100_label_switch(0, 0.1, 1e-4)
-        experiment_leaf_shakespeare(15, 7, 0.1, 1e-4)
-        experiment_cifar100(0.01, 0.1, 1e-4)
-        experiment_leaf_shakespeare(30, 3, 0.1, 1e-4)
-        experiment_cifar100(10, 0.1, 1e-4)
+    print("run remote")
+    experiment_rel_mnist()
+    experiment_rot_mnist()
+    #experiment_leaf_shakespeare(15,7)
+    #experiment_leaf_shakespeare(30,3)
+    #experiment_leaf_shakespeare(200,5)
+    #experiment_cifar100(0.1)
+    #experiment_cifar100(10)
+    #experiment_cifar100_label_switch(0)
 
 
 

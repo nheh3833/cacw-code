@@ -1,13 +1,27 @@
+import os
 import shlex
 
 import paramiko
 
+# Credentials come from the environment so they never end up in this file,
+# which is tracked in git. Set them in your shell before running:
+#
+#   PowerShell:  $env:TEZA_HOST="1.2.3.4"; $env:TEZA_USER="me"; $env:TEZA_PASSWORD="secret"
+#   bash:        export TEZA_HOST=1.2.3.4 TEZA_USER=me TEZA_PASSWORD=secret
+#
+# Filling the fallbacks in below also works, but do not commit real values.
+HOST = os.environ.get("TEZA_HOST", "add yours")
+PORT = int(os.environ.get("TEZA_PORT", 22))  # int: paramiko passes it to socket.connect
+USER = os.environ.get("TEZA_USER", "add")
+PASSWORD = os.environ.get("TEZA_PASSWORD", "add")
 
-# Fill these in locally. Do not commit real credentials.
-HOST = ""
-PORT = 22  # int, not str: paramiko passes this straight to socket.connect
-USER = ""
-PASSWORD = ""
+if not HOST:
+    raise SystemExit(
+        "TEZA_HOST is not set and HOST is empty.\n"
+        "An empty hostname resolves to your own machine, so the SSH connection\n"
+        "would fail with a confusing 'Unable to connect to port 22 on <local ip>'.\n"
+        "Set TEZA_HOST (and TEZA_USER / TEZA_PASSWORD) first."
+    )
 
 # NOTE: REMOTE_HOME is no longer hardcoded. "/home" is the parent of all user
 # home directories and is root-owned, so every upload / install / log write

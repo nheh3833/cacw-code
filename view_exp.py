@@ -1,14 +1,20 @@
 # Viewer for the experiment launched by run_remoute.py.
 # Connection settings and the log location are kept in sync with that script.
+import os
 import shlex
 
 import paramiko
 
-# Fill these in locally. Do not commit real credentials.
-HOST = ""
-PORT = 22
-USER = ""
-PASSWORD = ""
+# Same environment variables as run_remoute.py, so both scripts stay in sync:
+#   PowerShell:  $env:TEZA_HOST="1.2.3.4"; $env:TEZA_USER="me"; $env:TEZA_PASSWORD="secret"
+#   bash:        export TEZA_HOST=1.2.3.4 TEZA_USER=me TEZA_PASSWORD=secret
+HOST = os.environ.get("TEZA_HOST", "add")
+PORT = int(os.environ.get("TEZA_PORT", 22))
+USER = os.environ.get("TEZA_USER", "add")
+PASSWORD = os.environ.get("TEZA_PASSWORD", "add")
+
+if not HOST:
+    raise SystemExit("TEZA_HOST is not set and HOST is empty. Set it before running.")
 
 # Must match run_remoute.py. REMOTE_HOME is not hardcoded: "/home" is the
 # root-owned parent of all user home directories, so the log actually lives in

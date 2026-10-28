@@ -3869,13 +3869,17 @@ def experiment_rel_mnist(sigma=0):
     global itr_num
     global momentum
     global decay
+    global max_norm
 
     print("sigma")
     print(sigma)
     momentum = 0.9
     decay = 5e-4
     lr = 0.01
-    itr_num = 50
+    # Paper Appendix G.1 (MNIST): max norm of gradient = 1. Set explicitly
+    # because experiment_cifar100 raises the global to 5 and it would leak here.
+    max_norm = 1
+    itr_num = 51
     jump =1
 
     print("\n\nstart experiment rel mnist")
@@ -3923,6 +3927,8 @@ def experiment_rel_mnist(sigma=0):
         arr9 = []
         for seed in seeds:
             set_seed(seed)
+            arr9.append(fedrep_train(clients_data, testloader, batch, "fully", lr))
+            set_seed(seed)
             arr7.append(ditto_train(clients_data,testloader,batch,model,lr,lam=0.05))
             set_seed(seed)
             arr2.append(feddisco_gradient_approach(clients_data,testloader,batch,model,lr))
@@ -3935,10 +3941,10 @@ def experiment_rel_mnist(sigma=0):
             set_seed(seed)
             start = time.time()
             arr03.append(our_approach(clients_data, testloader, batch, model, lr, do_print="no",do_reg="yes"))
-
+            time03.append(time.time() - start)
+            # 3. Our Approach pca no reg (Table 1 row "SP-CACW pca no reg")
             set_seed(seed)
             arr02.append(our_approach(clients_data, testloader, batch, model, lr, do_print="no",do_pca="yes"))
-            time03.append(time.time() - start)
             start = time.time()
             arr3.append(only_my_data_approach(clients_data, testloader, batch, model, lr))
             time3.append(time.time() - start)
@@ -3965,23 +3971,21 @@ def experiment_rel_mnist(sigma=0):
 
     print(f"\nsigma={sigma}")
     print(f"\narr9={arr9}")
-    print(f"\narr0={arr8}")
+    print(f"\narr8={arr8}")
     print(f"\narr0={arr0}")
     print(f"\narr01={arr01}")
     print(f"\narr02={arr02}")
     print(f"\narr03={arr03}")
     print(f"\narr04={arr04}")
-    print(f"\narr01={arr01}")
     print(f"\narr1={arr1}")
     print(f"\narr2={arr2}")
     print(f"\narr3={arr3}")
     print(f"\narr4={arr4}")
     print(f"\narr5={arr5}")
     print(f"\narr6={arr6}")
-    print(f"\narr2={arr2}")
     print(f"\narr7={arr7}")
 
-def experiment_rot_mnist(sigma=0):
+def experiment_rot_mnist(sigma=0.5):
     # --- 0. SETUP DEVICE ---
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(f"Running on: {device}")
@@ -3990,10 +3994,14 @@ def experiment_rot_mnist(sigma=0):
     global itr_num
     global momentum
     global decay
+    global max_norm
 
-    itr_num=50
+
     momentum = 0.9
-    decay = 1e-4
+    # Paper Appendix G.1 (MNIST): weight decay 5e-4, max norm of gradient = 1.
+    # max_norm is set explicitly because experiment_cifar100 raises it to 5.
+    decay = 5e-4
+    max_norm = 1
     lr = 0.01
 
 
@@ -4081,6 +4089,8 @@ def experiment_rot_mnist(sigma=0):
         # Run the main experiment loop
         for seed in seeds:
             set_seed(seed)
+            arr9.append(fedrep_train(clients_data, testloader, batch, "fully", lr))
+            set_seed(seed)
             arr7.append(ditto_train(clients_data,testloader,batch,model,lr,lam=0.05))
             set_seed(seed)
             arr2.append(feddisco_gradient_approach(clients_data,testloader,batch,model,lr))
@@ -4093,8 +4103,11 @@ def experiment_rot_mnist(sigma=0):
             set_seed(seed)
             start = time.time()
             arr03.append(our_approach(clients_data, testloader, batch, model, lr, do_print="no",do_reg="yes"))
+
+            # 3. Our Approach pca no reg (Table 1 row "SP-CACW pca no reg")
             set_seed(seed)
             arr02.append(our_approach(clients_data, testloader, batch, model, lr, do_print="no",do_pca="yes"))
+
             start = time.time()
             arr3.append(only_my_data_approach(clients_data, testloader, batch, model, lr))
 
@@ -4112,20 +4125,18 @@ def experiment_rot_mnist(sigma=0):
 
     print(f"\nsigma={sigma}")
     print(f"\narr9={arr9}")
-    print(f"\narr0={arr8}")
+    print(f"\narr8={arr8}")
     print(f"\narr0={arr0}")
     print(f"\narr01={arr01}")
     print(f"\narr02={arr02}")
     print(f"\narr03={arr03}")
     print(f"\narr04={arr04}")
-    print(f"\narr01={arr01}")
     print(f"\narr1={arr1}")
     print(f"\narr2={arr2}")
     print(f"\narr3={arr3}")
     print(f"\narr4={arr4}")
     print(f"\narr5={arr5}")
     print(f"\narr6={arr6}")
-    print(f"\narr6={arr2}")
     print(f"\narr7={arr7}")
 
 def experiment_cifar100(sigma, lr1=0.1, decay_val=5e-4):
@@ -4603,51 +4614,56 @@ def experiment_leaf_shakespeare(num_clients,users,lr1=0.01, decay_val=1e-4):
     set_seed()
     p=0.1
     time0, time01,time02,time03,time04,time2, time3, time4, time5, time6 = [], [], [], [], [], [],[],[],[],[]
+    ifteset=1
     for seed in seeds:
-        print(seed)
         set_seed(seed)
-        arr3.append(only_my_data_approach(clients_data, testloader, batch, model, lr))
-
-        arr9.append(fedrep_train(clients_data, testloader, batch, model, lr))
-        set_seed(seed)
-        arr92.append(fedrep_train(clients_data, testloader, batch, model, lr,participation_rate=p))
-        set_seed()
-        arr10.append(our_approach_partial_participation(clients_data,testloader,batch,model,lr,do_print="no",do_reg="yes",p=p))
-        set_seed(seed)
-        arr02.append(our_approach(clients_data, testloader, batch, model, lr, do_print="no",do_pca="yes"))
-        set_seed(seed)
-        arr7.append(ditto_train(clients_data,testloader,batch,model,lr,lam=0.05))
-        set_seed(seed)
-        arr2.append(feddisco_gradient_approach(clients_data,testloader,batch,model,lr))
-        # 1. Our Approach (No cluster)
-        set_seed(seed)
-        arr0.append(our_approach(clients_data, testloader, batch, model, lr, do_print="no"))
-        # print(f"arr01: {arr01}") # Added this in case you want to print it too
-        # 2. Our Approach pca no reg
-        # 2. Our Approach reg no pca
-        set_seed(seed)
-        start = time.time()
-        arr03.append(our_approach(clients_data, testloader, batch, model, lr, do_print="no",do_reg="yes"))
-        time03.append(time.time() - start)
-        start = time.time()
-        arr3.append(only_my_data_approach(clients_data, testloader, batch, model, lr))
-        time3.append(time.time() - start)
-        # 4. Oracle Approach
-        set_seed(seed)
-
-
-        # 5. Fed Cluster Algo
-        set_seed(seed)
-        start = time.time()
-        arr5.append(fed_cluster_algo(clients_data, testloader, batch, "lstm", lr, 1))
-        time5.append(time.time() - start)
+        if(ifteset==1):
+            set_seed(seed)
+            arr9.append(fedrep_train(clients_data, testloader, batch, model, lr))
+            set_seed(seed)
+            arr92.append(fedrep_train(clients_data, testloader, batch, model, lr,participation_rate=p))
+            set_seed()
+            arr10.append(our_approach_partial_participation(clients_data,testloader,batch,model,lr,do_print="no",do_reg="yes",p=p))
+            set_seed(seed)
+            arr02.append(our_approach(clients_data, testloader, batch, model, lr, do_print="no",do_pca="yes"))
+            set_seed(seed)
+            arr7.append(ditto_train(clients_data,testloader,batch,model,lr,lam=0.05))
+            set_seed(seed)
+            arr2.append(feddisco_gradient_approach(clients_data,testloader,batch,model,lr))
+            # 1. Our Approach (No cluster)
+            set_seed(seed)
+            arr0.append(our_approach(clients_data, testloader, batch, model, lr, do_print="no"))
+            # print(f"arr01: {arr01}") # Added this in case you want to print it too
+            # 2. Our Approach pca no reg
+            # 2. Our Approach reg no pca
+            set_seed(seed)
+            start = time.time()
+            arr03.append(our_approach(clients_data, testloader, batch, model, lr, do_print="no",do_reg="yes"))
+            time03.append(time.time() - start)
+            start = time.time()
+            arr3.append(only_my_data_approach(clients_data, testloader, batch, model, lr))
+            time3.append(time.time() - start)
+            # 4. Oracle Approach
+            set_seed(seed)
 
 
-        # 6. FedAmp Train
-        set_seed(seed)
-        start = time.time()
-        arr6.append(fedamp_train(clients_data, testloader, batch, "lstm", lr))
-        time6.append(time.time() - start)
+            # 5. Fed Cluster Algo
+            set_seed(seed)
+            start = time.time()
+            arr5.append(fed_cluster_algo(clients_data, testloader, batch, "lstm", lr, 1))
+            time5.append(time.time() - start)
+
+
+            # 6. FedAmp Train
+            set_seed(seed)
+            start = time.time()
+            arr6.append(fedamp_train(clients_data, testloader, batch, "lstm", lr))
+            time6.append(time.time() - start)
+
+        num_seeds = len(seeds)
+
+
+
     print(f"\narr0={arr0}")
     print(f"\narr01={arr01}")
     print(f"\narr02={arr02}")

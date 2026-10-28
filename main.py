@@ -29,15 +29,19 @@ def main():
     print(Path(__file__).stem)
 
 
+    # The six heterogeneity settings reported in Table 1 of the paper.
+    # Uncomment the ones you want to run.
     print("run remote")
-    experiment_rel_mnist()
-    experiment_rot_mnist()
-    #experiment_leaf_shakespeare(15,7)
-    #experiment_leaf_shakespeare(30,3)
-    #experiment_leaf_shakespeare(200,5)
-    #experiment_cifar100(0.1)
-    #experiment_cifar100(10)
-    #experiment_cifar100_label_switch(0)
+    experiment_rel_mnist(0)          # mnist relabel
+    experiment_rot_mnist(0)          # mnist rotate (89 clients, 4 deg steps)
+    #experiment_leaf_shakespeare(15,7,0.1,1e-4)     # shakespeare n=15 m=7
+    #experiment_leaf_shakespeare(30,3,0.1,1e-4)     # shakespeare n=30 m=3
+    #experiment_leaf_shakespeare(200,5,0.1,1e-4)    # shakespeare n=200 m=5
+    #experiment_cifar100(0.01,0.1,1e-4)        # cif
+    #
+    # ar100 sigma=0.01
+    #experiment_cifar100(10,0.1,1e-4)          # cifar100 sigma=10
+    #experiment_cifar100_label_switch(0,0.1,1e-4)   # cifar100 label switch
 
 
 
